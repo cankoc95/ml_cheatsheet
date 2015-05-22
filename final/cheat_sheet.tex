@@ -1,4 +1,4 @@
-\documentclass[10pt,landscape]{article}
+\documentclass[9pt,landscape]{article}
 \usepackage{multicol}
 \usepackage{calc}
 \usepackage[landscape]{geometry}
@@ -7,11 +7,11 @@
 
 % Turn off header and footer
 \pagestyle{empty}
-\geometry{top=.25in,left=.25in,right=.25in,bottom=.25in}
+\geometry{top=.12in,left=.25in,right=.25in,bottom=.12in}
 
 % Redefine section commands to use less space
 \makeatletter
-\renewcommand{\section}{\@startsection{section}{1}{\z@}{3ex}{2ex}
+\renewcommand{\section}{\@startsection{section}{1}{\z@}{2ex}{1ex}
                        {\normalfont\normalsize\bfseries\textit}}
 \renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}{2ex}{0.5ex}
                           {\normalfont\small\bfseries}}
@@ -104,14 +104,13 @@ Large C: focus on fit to data (small margin is ok). More overfitting.
 Small C: focus on large margin, less tendency to overfit.
 Overfitting increases with: less data, more features.
 \ruler
-$\btheta = \sum_{j}\alpha_j y_j\bx_j$, $\alpha_j \neq 0$ only for support vectors.
-\columnbreak\\
+$\btheta = \sum_{j}\alpha_j y_j\bx_j$, $\alpha_j \neq 0$ only for support vectors.\\
 \textbf{Width} of the margin is $\frac{2}{\norm{\overrightarrow{\btheta}}}$.
 \ruler
 $K(\bx_i, \bx_j) = \phi(\bx_i)\cdot\phi(\bx_j)$, K is called a kernel.\\
 Solve $\alpha_j$ to determine $\sum_j\alpha_j y_j\phi(\bx_j)$.\\
 Compute the classifier for a test point $\bx$ via $\btheta\cdot\phi(\bx) = \sum_{j}\alpha_j y_j K(\bx_j, \bx)$
-\ruler
+\columnbreak\\
 degree-m polynomial kernel: $K_m(\bx, \tilde{\bx}) = (1+\bx\cdot\tilde{\bx})^m$\\
 RBF kernel (infinite dimention): $K_{rbf}(\bx, \tilde{\bx}) = \text{exp}(-\gamma\norm{\bx-\tilde{\bx}}^2)$
 % --------------------------------
@@ -130,7 +129,7 @@ Assume $(\bX, \bY)$ are chosen i.i.d according to some probability distribution 
 $
 f^{*}(x) =
 \begin{cases}
-    1,  & \text{if } P(\bY=1|x) > P(\bY=-1|x) \\
+    1,  & \text{if } P(\bY=1|x) L_{f(x)=-1} > P(\bY=-1|x) L_{f(x)=1}\\
     -1, & \text{otherwise. }
 \end{cases}
 $,\\
@@ -165,15 +164,14 @@ $\bbeta = \inv{\Sigma}(\bmu_{1}-\bmu_{0})$, $\beta_0=\frac{\tp{\bmu_{0}}\inv{\Si
 \section{Estimation}
 \textbf{Method of moments}:
 Match moments of the distribution to momemnts measured in the data.
-% \ruler
-\columnbreak\\
+\ruler
 \textbf{Maximum likelihood}:
 Choose parameter so that the distribution it defines gives the obverved data the highest probability (likelihood).
 \ruler
 \textbf{Maximum log likelihood}:
 Log of maximum likelihood, equilvalent to maximum likelihood since log is monotonically increase; it is useful
 since it can change $\prod$ to $\sum$.
-\ruler
+\columnbreak\\
 \textbf{Penalized maximum likelihood}:
 Add a penalty term in the maximum (log) likelihood equation; treat the penalty term as some imaginary data points
 crafted for desired probability.
@@ -234,6 +232,7 @@ $F_{\text{lin}} := \{ \bx \mapsto \tp{\bx}\bbeta + \beta_0 : \inR{\bbeta}{p}, \b
 $\hat{R}(f) = \hat{\E}_n \ell(f(\bX), Y) = \frac{1}{n}\sum_{i=1}{n}(f(\bX_i) - Y_i)^2$\\
 Choose $\hat{f} := \text{arg } min_{f \in F_\text{lin}} \hat{\E}_n \ell(f(\bX), Y)$
 \ruler
+-\\
 Find $\hat{f} : \bx \mapsto \tp{\bx}\hat{\bbeta}$, such that\\
 $
 \hat{\bbeta} = \text{arg } min_{\inR{\bbeta}{p}}\sum_{i=1}^{n}(\tp{\bX_i}\bbeta - Y_i)^2
@@ -282,7 +281,7 @@ $\hat{\bbeta}^{\text{ridge}}=\inv{(\tp{\bX}\bX+\lambda\bI)}\tp{\bx}\by$
 \textbf{Lasso regression} is like $L1$ regularization:
 $\hat{\bbeta} = \text{arg }\min_{\bbeta}(\sum_{i=1}^n(y_i-\tp{\bx}_i\bbeta)^2 + \lambda\sum_{j=1}{p}|\beta_j|)$
 % \ruler
-\columnbreak\\
+
 While ridge regression leads to reduced, but non-zero values of the coefficients,
 Lasso regression forces some coefficients to be zero.
 \ruler
@@ -290,14 +289,12 @@ Lasso regression forces some coefficients to be zero.
 Ridge regression is equivalent to a MAP estimate with a gaussian prior.
 Lasso regression is equivalent to a MAP estimate with a Laplace prior.
 % --------------------------------
-
 \section{Logistic Regression}
-Model \textbf{log odds} ($\log p/(1-p)$) as an affine function of $\bx$.
-\ruler
+Model \textbf{log odds} ($\log p/(1-p)$) as an affine function of $\bx$.\\
 $P(Y=1|\bx)=\frac{1}{1+\text{exp}(\tp{\bbeta}\bx)}$
 Given data $(\bX_1, Y_1),\dots,(\bX_n, Y_n) \in \R^{p} \times \{0,1\}$,
 estimate $\bbeta$ with maximum likelihood.
-\ruler
+\columnbreak\\
 \textbf{Log likelihood}:\\
 $\ell(\bbeta) = \sum_{i=1}^{n}y_i\log \mu_i(\bbeta)+(1-y_i)\log(1-\mu_i(\bbeta))$,\\
 where $\mu_i(\bbeta) = P(Y=1|\bX=\bx_i,\bbeta)=\frac{1}{1+\text{exp}(-\tp{\bbeta}\bx_i)}$
@@ -347,7 +344,6 @@ such that $L(x,\lambda)=f_0(x)+\sum_{i=1}^{m}\lambda_{i}f_{i}(x)$.
 \textbf{Weak duality}:
 $\underbrace{p^*=\min_{x}\max_{\lambda\geq0}L(x,\lambda)}_\text{primal}\geq\underbrace{\max_{\lambda\geq0}\min_{x}L(x,\lambda)=d^*}_\text{dual}$
 % \ruler
-\columnbreak\\
 \textbf{Strong duality}: \\
 if there is a saddle point $(x^*, \lambda^*)$ such that for all $x$ and $\lambda\geq0$,
 $L(x^*,\lambda)\leq L(x^*,\lambda^*)\leq L(x,\lambda^*)$, then primal and dual have the same value ($p^* = d^*$).
@@ -363,10 +359,10 @@ $g(\alpha)=\min_{\btheta} L(\btheta,\alpha)$\\
 setting $\btheta^* = \sum_{i=1}^{n}\alpha_i y_i \bx_i$,\\
 $g(\alpha)=\sum_{i=1}^{n}\alpha_i-\frac{1}{2}\sum_{i,j}\alpha_{i}\alpha_{j}y_{i}y_{j}\tp{\bx}_{i}\bx_{j}$
 \ruler
-\textbf{Hard margein SVM dual problem}:
+\textbf{Hard margin SVM dual problem}:
 $\max_{\alpha} \sum_{i=1}^{n}\alpha_i-\frac{1}{2}\sum_{i,j}\alpha_{i}\alpha_{j}y_{i}y_{j}\tp{\bx}_{i}\bx_{j}$, s.t. $\alpha_i\geq0$ $(i=1,\dots,n)$.
 $\min_{\balpha} \frac{1}{2}\tp{\balpha}\diag(\by)\mathbf{K}\diag(\by)\balpha - \tp{\balpha}\mathbf{1}$, s.t. $\balpha\geq\mathbf{0}$.
-\ruler
+\columnbreak\\
 \textbf{Soft margin SVM}:\\
 $L(\btheta,\xi,\alpha,\lambda) = \frac{1}{2}\norm{\btheta}^2 + \frac{C}{n}\sum_{i=1}^{n}\xi_i + \sum_{i=1}^{n}\alpha_i(1-y_i\tp{\btheta}\bx_i-\xi_i) - \sum_{i=1}^{n}\lambda_i\xi_i$
 \ruler
@@ -374,13 +370,42 @@ $L(\btheta,\xi,\alpha,\lambda) = \frac{1}{2}\norm{\btheta}^2 + \frac{C}{n}\sum_{
 $\min_{\balpha} \frac{1}{2}\tp{\balpha}\diag(\by)\mathbf{K}\diag(\by)\balpha - \tp{\balpha}\mathbf{1}$, s.t. $\mathbf{0}\leq\balpha\leq\frac{C}{n}$.
 % --------------------------------
 
-\section{K-Nearest Neighbors}
-Given $\bx_q$, take vote among its k nearest neighbors, or take mean of $f$ values of k nearest neighbors if real-values.
-$\hat{f}(\bx_q) \leftarrow \frac{1}{k} \sum_{i=1}^{k} f(\bx_i)$
-\ruler
-\textbf{Distance metrics:}\\
-p-norm: $\norm{\bz}_p = (\sum_{i=1}^{d}|z_i|^p)^{1/p}$
 % --------------------------------
+\section{Clustering}
+\textbf{Group similarity $dist\{S_a,S_b\}$:}\\
+Single link: $min_{i,j}d_{i,j}$   Complete link: $max_{i,j}d_{i,j}$ \\
+Average link: $\Sigma_i\Sigma_jd_{i,j}$  Centroid link: $d(\bar{x_{a}},\bar{x_{b}})$
+\ruler
+\textbf{EM algorithm:}\\
+E step: $P(\mu_i\mid x_k) = frac{P(\mu_i)P(x_k\mid \mu)}{P(x_k)} = \frac{P\left(\mu _i\right) P\left(x_k|\mu _i\right)}{\sum _j P\left(\mu _j\right) P\left(x_k|\mu _j\right)}$\\
+M step: $P\left(c_i\right)=\frac{\sum _{k=1}^{n_e} P\left(\mu _i|x_k\right)}{n_e}$\\
+$\mu _i=\frac{\sum _{k=1}^{n_e} x_k P\left(\mu _i|x_k\right)}{\sum _{k=1}^{n_e} P\left(\mu _i|x_k\right)}$\\
+$\sigma _i^2=\frac{\sum _{k=1}^{n_e} \left(x_k-\mu _i\right){}^2 P\left(\mu _i|x_k\right)}{\sum _{k=1}^{n_e} P\left(\mu _i|x_k\right)}$
+\section{Association rules}
+Rule $X\rightarrow Y$: $supp(X)=P(X)$, $conf(X\rightarrow Y)=P(Y\mid X)$ and $lift(X\rightarrow Y)= \frac{P(X\cup Y)}{P(X) P(Y)}$.
+\section{Decision Tree}
+Classification tree entropy: $\sum\limits_{i}-p_i*log(p_i)$
+Maximize entropy gain
+\ruler
+\textbf{Adaboost:}\\
+1. Assign uniform weight for each training sample $w_{1,i} = \frac{1}{N}$ for $i$ in $\{1, 2 ... N\}$\\
+2a. For each round of training $m$ in $\{1, 2 ... M\}$ train classifier $G_m$\\
+2b. Calculate weighted error rate $e_m = \sum\limits_{i=1}^{N}w_{m,i}I(G_m(x_i)\neq y_i)$\\
+2c. The final voting weight for $G_m$ is $a_m = \frac{1}{2}log(\frac{1-e_m}{e_m})$\\
+2d. Update training sample weight $w_{m+1,i} = \frac{w_m,i}{Z_m}exp(-a_my_iG_m(x_i)), i=1,2 ..., N$ Where $Z_m = \sum\limits_{i=1}^{N}w_{m,i}exp(-a_my_iG_m(x_i))$\\
+3. The final classifier is $f(x)=\sum\limits_{m=1}^{M}a_mG_m(x)$
+
+\section{Neural Network}
+\textbf{Useful gradient:}\\
+$\nabla_h \bigg[-y  \log h - (1 - y)  \log (1 - h)\bigg] = \frac{1-y}{1-h} - \frac{y}{h}$\\
+Sigmoid $g$: $\nabla_x g(x) = g(x) * (1 - g(x))$
+$\nabla_x tanh(x) = 1 - tanh^2(z)$
+Fully connected layer i with bias: $\nabla_WL=[x_{i-1}...x_{i-1}]*[\vec{0},\nabla_{c_i}A(c_i)]*W_{i+1} * \nabla_{c_{i+1}}L$
+\section{PCA}
+\textbf{Matrix decomposition:}\\
+$X = U\Sigma W^T$ so $X^TX = W\Sigma^T\Sigma W^T$ and $XX^T = U\Sigma\Sigma^T U^T$\\
+Hence, for row vector design matrix, the projection matrix is $W^T$
+
 
 \end{multicols*}
 \end{document}
